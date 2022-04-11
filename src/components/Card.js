@@ -1,16 +1,15 @@
 import React from 'react';
 
-function Card(props) {
-const {name, link, likes, card, onCardClick} = props;
+function Card({ name, link, likes, card, onCardClick }) {         //видимо прочитал статью https://habr.com/ru/company/skillbox/blog/658007/ и сделал деструктуризацию по ней
 
-  function handleClick() {          
+  function handleClick() {
     onCardClick(card);
-  }  
+  }
 
   return (
     <div className="place-template">
-      <li className="place"> 
-        <img className="place__image" src={link} alt={name} onClick={handleClick} />     
+      <li className="place">
+        <img className="place__image" src={link} alt={name} onClick={handleClick} />
         <div className="place__info">
           <div className="place__box-name">
             <h2 className="place__title">{name}</h2>
