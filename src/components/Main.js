@@ -9,36 +9,24 @@ function Main({ onEditAvatar, onEditProfile, onAddPlace, onCardClick }) {
   const [cards, setCards] = React.useState([]);
 
 
-
-
   useEffect(() => {
-    api.getProfile()
-      .then((profile) => {
+    Promise.all([api.getProfile(), api.getInitialCard()])
+      .then(([profile, cards]) => {
         setUserName(profile.name);
         setUserDescription(profile.about);
         setUserAvatar(profile.avatar);
+        const cardsData = cards.map(item => ({
+          name: item.name,
+          link: item.link,
+          likes: item.likes,
+          id: item._id
+        }));
+        setCards(cardsData)
       })
       .catch((err) => {
         console.log(`${err} при загрузке данных с сервера`);
       });
 
-    const handleCardsData = () => {
-      api.getInitialCard()
-        .then((cards) => {
-
-          const cardsData = cards.map(item => ({
-            name: item.name,
-            link: item.link,
-            likes: item.likes,
-            id: item._id
-          }));
-          setCards(cardsData)
-        })
-        .catch((err) => {
-          console.log(`${err} при загрузке данных с сервера`);
-        });
-    }
-    handleCardsData()
   }, [])
 
 

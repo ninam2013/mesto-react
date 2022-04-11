@@ -1,7 +1,7 @@
 import React from 'react';
 
-function Card({ name, link, likes, card, onCardClick }) {         //видимо прочитал статью https://habr.com/ru/company/skillbox/blog/658007/ и сделал деструктуризацию по ней
-
+function Card({ name, link, likes, card, onCardClick }) {        
+  
   function handleClick() {
     onCardClick(card);
   }
