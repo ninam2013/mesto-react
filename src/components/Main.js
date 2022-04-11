@@ -2,8 +2,7 @@ import React, { useEffect } from 'react';
 import api from '../utils/Api'
 import Card from '../components/Card';
 
-function Main(props) {
-  const { onEditAvatar, onEditProfile, onAddPlace, onCardClick } = props;
+function Main({ onEditAvatar, onEditProfile, onAddPlace, onCardClick }) {
   const [userName, setUserName] = React.useState('');
   const [userDescription, setUserDescription] = React.useState('');
   const [userAvatar, setUserAvatar] = React.useState('');
