@@ -14,13 +14,19 @@ class Api {
   }
 
   //подгрузка информации пользователя с сервера
-  getProfile() {
+  // getProfile() {
+  //   return fetch(`${this._baseUrl}/users/me`, {
+  //     headers: this._headers
+  //   })
+  //     .then(this._getResponse)
+  // }
+
+  getUserInfo() {
     return fetch(`${this._baseUrl}/users/me`, {
-      headers: this._headers
+      headers: this._headers,
     })
       .then(this._getResponse)
   }
-
 
   //подгрузка карточек с сервера
   getInitialCard() {

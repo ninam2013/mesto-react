@@ -27,6 +27,8 @@
 @import url(/src/blocks/place/__count/place__count.css);
 @import url(/src/blocks/place/__button/_active/place__button_active.css);
 @import url(/src/blocks/place/__basket/place__basket.css);
+@import url(/src/blocks/place/__basket/_visible/place__basket_visible.css);
+@import url(/src/blocks/place/__basket/_hidden/place__basket_hidden.css);
 @import url(/src/blocks/footer/footer.css);
 @import url(/src/blocks/footer/__copyright/footer__copyright.css);
 @import url(/src/blocks/popup/popup.css);

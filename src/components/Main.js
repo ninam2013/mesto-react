@@ -1,34 +1,43 @@
-import React, { useEffect } from 'react';
-import api from '../utils/Api'
+import React from 'react';
+import api from '../utils/Api';
 import Card from '../components/Card';
-
-function Main({ onEditAvatar, onEditProfile, onAddPlace, onCardClick }) {
-  const [userName, setUserName] = React.useState('');
-  const [userDescription, setUserDescription] = React.useState('');
-  const [userAvatar, setUserAvatar] = React.useState('');
-  const [cards, setCards] = React.useState([]);
+import { CurrentUserContext } from '../contexts/CurrentUserContext';    //1+
 
 
-  useEffect(() => {
-    Promise.all([api.getProfile(), api.getInitialCard()])
-      .then(([profile, cards]) => {
-        setUserName(profile.name);
-        setUserDescription(profile.about);
-        setUserAvatar(profile.avatar);
-        const cardsData = cards.map(item => ({
-          name: item.name,
-          link: item.link,
-          likes: item.likes,
-          id: item._id
-        }));
-        setCards(cardsData)
+function Main({ onEditAvatar, onEditProfile, onAddPlace, onCardClick, cards, setCards }) {      //1+ cards
+  // const [userName, setUserName] = React.useState('');
+  // const [userDescription, setUserDescription] = React.useState('');
+  // const [userAvatar, setUserAvatar] = React.useState('');
+  // const [cards, setCards] = React.useState([]);
+  const currentUser = React.useContext(CurrentUserContext);     //1+
+
+
+  function handleCardLike(card) {       //2+
+    // Снова проверяем, есть ли уже лайк на этой карточке
+
+    const isLiked = card.likes.some(i => i._id === currentUser._id);
+
+    // Отправляем запрос в API и получаем обновлённые данные карточки
+    const request = isLiked ?
+      api.deleteLike(card._id, !isLiked) :
+      api.addLike(card._id, !isLiked)
+    request.then((newCard) => {
+      setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
+    })
+      .catch((err) => {
+        console.log(`${err}`);
+      });
+  }
+
+  function handleCardDelete(card) {    //2 
+    api.deleteCard(card._id)
+      .then(() => {
+        setCards((state) => state.filter((c) => c._id !== card._id));
       })
       .catch((err) => {
-        console.log(`${err} при загрузке данных с сервера`);
+        console.log(`${err}`);
       });
-
-  }, [])
-
+  }
 
   return (
     <main className="main">
@@ -36,13 +45,13 @@ function Main({ onEditAvatar, onEditProfile, onAddPlace, onCardClick }) {
       <section className="profile">
         <div className="profile__info">
           <button className="profile__button-avatar" onClick={onEditAvatar}></button>
-          {userAvatar && (<img className="profile__image" src={userAvatar} alt="аватар" />)}
+          {currentUser.avatar && (<img className="profile__image" src={currentUser.avatar} alt="аватар" />)}    {/*  1  */}
           <div className="profile__desc">
             <div className="profile__name">
-              <h1 className="profile__title">{userName}</h1>
+              <h1 className="profile__title">{currentUser.name}</h1>      {/*  1  */}
               <button className="profile__button" type="button" onClick={onEditProfile}></button>
             </div>
-            <p className="profile__text">{userDescription}</p>
+            <p className="profile__text">{currentUser.about}</p>   {/*  1  */}
           </div>
         </div>
         <button className="profile__add-button" type="button" onClick={onAddPlace}></button>
@@ -52,8 +61,17 @@ function Main({ onEditAvatar, onEditProfile, onAddPlace, onCardClick }) {
         <ul className="places__container">
 
           {
-            cards.map(item => (
-              <Card key={item.id} name={item.name} link={item.link} likes={item.likes} card={item} onCardClick={onCardClick} />
+            cards.map(item => (       //1+ cards
+              <Card key={item._id}
+                name={item.name}
+                link={item.link}
+                likes={item.likes}
+                card={item}
+                onCardClick={onCardClick}
+                currentUser={currentUser}
+                onCardLike={handleCardLike}     //2+
+                onCardDelete={handleCardDelete} //2
+              />
             ))
           }
 
