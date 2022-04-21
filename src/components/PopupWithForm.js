@@ -1,8 +1,6 @@
 import React from 'react';
 
-function PopupWithForm(props) {
-
-    const { name, title, buttonText, isOpen, onClose, onSubmit } = props;
+function PopupWithForm({ name, title, buttonText, isOpen, onClose, onSubmit, children }) {    
 
     return (
         <>
@@ -11,7 +9,7 @@ function PopupWithForm(props) {
                     <button className="popup__close" type="button" onClick={onClose}></button>
                     <h2 className="popup__title">{title}</h2>
                     <form className="popup__form" name={name} onSubmit={onSubmit} noValidate>
-                        {props.children}
+                        {children}
                         <button type="submit" className="popup__button popup__button_js_card-submit margin-top">{buttonText}</button>
                     </form>
                 </div>

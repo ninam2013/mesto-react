@@ -13,14 +13,8 @@ class Api {
     }
   }
 
-  //подгрузка информации пользователя с сервера
-  // getProfile() {
-  //   return fetch(`${this._baseUrl}/users/me`, {
-  //     headers: this._headers
-  //   })
-  //     .then(this._getResponse)
-  // }
 
+  // подгрузка информации пользователя с сервера
   getUserInfo() {
     return fetch(`${this._baseUrl}/users/me`, {
       headers: this._headers,
@@ -94,13 +88,13 @@ class Api {
   }
 
   //замена фото
-  editAvatar(avatar) {
+  editAvatar(avatar) {   
     return fetch(`${this._baseUrl}/users/me/avatar`, {
       method: 'PATCH',
       headers: this._headers,
-      body: JSON.stringify({
-        avatar: avatar.link
-      })
+      body: JSON.stringify(
+        avatar
+      )
     })
       .then(this._getResponse)
   }

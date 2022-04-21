@@ -5,6 +5,7 @@ import Main from '../components/Main';
 import Footer from '../components/Footer';
 import PopupWithForm from '../components/PopupWithForm';
 import EditProfilePopup from '../components/EditProfilePopup';    //3
+import EditAvatarPopup from '../components/EditAvatarPopup';
 import ImagePopup from '../components/ImagePopup';
 import api from '../utils/Api'
 import { CurrentUserContext } from '../contexts/CurrentUserContext';    //1+
@@ -63,6 +64,14 @@ function App() {
       .catch((err) => console.log(`${err}`));
   }
 
+  function handleUpdateAvatar(avatar) {        //4   
+    api.editAvatar(avatar)
+      .then((avatarData) => {          
+        setCurrentUser(avatarData);
+        closeAllPopups();
+      })
+      .catch((err) => console.log(`${err}`));
+  }
 
   return (
     <CurrentUserContext.Provider value={currentUser}>        {/*  1+  */}
@@ -77,15 +86,13 @@ function App() {
             cards={cards}
             setCards={setCards}
           />
-          {/* <EditProfilePopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} />            
+          <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar} />          {/*  4+  */}      
 
-            <EditProfilePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} />        */}
-
-          <PopupWithForm name="avatar" title="Обновить аватар" buttonText="Сохранить" isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} >
+          {/* <PopupWithForm name="avatar" title="Обновить аватар" buttonText="Сохранить" isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} >
             <input id="link-input-image" className="popup__input popup__input_js_card-link" type="url" name="link"
               placeholder="Ссылка на картинку" required />
             <span className="link-input-image-error popup__error"></span>
-          </PopupWithForm>
+          </PopupWithForm> */}
 
           {/* <PopupWithForm name="type-edit" title="Редактировать профиль" buttonText="Сохранить" isOpen={isEditProfilePopupOpen} onClose={closeAllPopups}>
             <input id="name-input" className="popup__input popup__input_js_name" type="text" name="name" placeholder="Имя"
@@ -97,6 +104,7 @@ function App() {
           </PopupWithForm> */}
 
           <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} />   {/*  3  */}
+
           <PopupWithForm name="add-card" title="Новое место" buttonText="Создать" isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} >
             <input id="title-input" className="popup__input popup__input_js_card-name" type="text" name="name"
               placeholder="Название" minLength="2" maxLength="30" required />

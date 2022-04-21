@@ -13,11 +13,9 @@ function Main({ onEditAvatar, onEditProfile, onAddPlace, onCardClick, cards, set
 
 
   function handleCardLike(card) {       //2+
-    // Снова проверяем, есть ли уже лайк на этой карточке
-
+   
     const isLiked = card.likes.some(i => i._id === currentUser._id);
-
-    // Отправляем запрос в API и получаем обновлённые данные карточки
+    
     const request = isLiked ?
       api.deleteLike(card._id, !isLiked) :
       api.addLike(card._id, !isLiked)
