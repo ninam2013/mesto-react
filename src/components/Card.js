@@ -2,14 +2,14 @@ import React from 'react';
 
 
 function Card({ name, link, likes, card, onCardClick, currentUser, onCardLike, onCardDelete }) {
-  const isOwn = card.owner._id === currentUser._id;                                       //1+
+  const isOwn = card.owner._id === currentUser._id;
   const cardDeleteButtonClassName = (
-    `place__basket ${isOwn ? 'place__basket_visible' : 'place__basket_hidden'}`   //1+
+    `place__basket ${isOwn ? 'place__basket_visible' : 'place__basket_hidden'}`
   );
 
-  const isLiked = card.likes.some(i => i._id === currentUser._id);                      //1+  
+  const isLiked = card.likes.some(i => i._id === currentUser._id);
   const cardLikeButtonClassName = (
-    `place__button ${isLiked ? 'place__button_active' : 'place__button'}`   //1+
+    `place__button ${isLiked ? 'place__button_active' : 'place__button'}`
   );
 
 
@@ -17,7 +17,7 @@ function Card({ name, link, likes, card, onCardClick, currentUser, onCardLike, o
     onCardClick(card);
   }
 
-  function handleLikeClick() {    //2+     
+  function handleLikeClick() {
     onCardLike(card)
   }
 
